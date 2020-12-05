@@ -4,19 +4,17 @@
 
 typedef struct sensorData
 {
-	float temperature;
-	float humidity;
-	float pressure;
+	double temperature;
+	double target;
 } sensor_data;
+
+extern sensorData lastdata;
 
 class Sensor
 {
 public:
 	void Initialize();
 	String LastValue(void);
-	String Messure();
-private:
-	String ConvertToJson(sensorData value);
-
-	sensorData m_lastValue;
+	sensorData Messure();
+	static String ConvertToJson(sensorData value);
 };

@@ -46,27 +46,25 @@ void Sensor::Initialize()
 	Serial.println();
 }
 
-String Sensor::Messure()
+sensorData Sensor::Messure()
 {
 	sensorData data = sensorData();
-	data.pressure = (bme.readPressure() / 100.0F) + 50;
 	data.temperature = bme.readTemperature();
-	data.humidity = bme.readHumidity();
-	m_lastValue = data;
-	return ConvertToJson(data);
+	data.target = lastdata.target;
+	lastdata = data;
+	return data;
 }
 
 String Sensor::LastValue()
 {
-	return ConvertToJson(m_lastValue);
+	return ConvertToJson(lastdata);
 }
 
 String Sensor::ConvertToJson(sensorData value)
 {
 	DynamicJsonDocument doc(JSON_OBJECT_SIZE(3));
 	doc["temperature"] = value.temperature;
-	doc["pressure"] = value.pressure;
-	doc["humidity"] = value.humidity;
+	doc["target"] = lastdata.target;
 
 	char output[250];
 	serializeJson(doc, output);

@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "sirv-cli": "^1.0.0",
-    "svg-gauge": "^1.0.6"
+    "svg-gauge": "^1.0.6",
+    "lodash": "4.17.20"
   }
 }

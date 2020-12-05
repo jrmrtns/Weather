@@ -7,8 +7,6 @@
 #include "ArduinoJson.h"
 #include "WebSocketHandler.h"
 
-extern String lastdata;
-
 class WebServerHandler
 {
 private:

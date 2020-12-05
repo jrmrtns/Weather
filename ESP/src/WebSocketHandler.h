@@ -5,8 +5,9 @@
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
 #include "ArduinoJson.h"
+#include "Sensor.h"
 
-extern String lastdatas;
+extern sensorData lastdata;
 
 class WebSocketHandler
 {
@@ -15,16 +16,12 @@ private:
 
   static void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
   {
-    /*   AwsFrameInfo *info = (AwsFrameInfo *)arg;
-  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
-  {
-    data[len] = 0;
-    if (strcmp((char *)data, "toggle") == 0)
+    AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
     {
-      ledState = !ledState;
-      notifyClients();
+      data[len] = 0;
+      lastdata.target = (double)(28);
     }
-  } */
   }
 
   static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
@@ -34,7 +31,7 @@ private:
     {
     case WS_EVT_CONNECT:
       Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
-      server->text(client->id(), lastdata);
+      server->text(client->id(), Sensor::ConvertToJson(lastdata));
       break;
     case WS_EVT_DISCONNECT:
       Serial.printf("WebSocket client #%u disconnected\n", client->id());
@@ -49,7 +46,7 @@ private:
   }
 
 public:
-  AsyncWebSocket* Initialize();
+  AsyncWebSocket *Initialize();
   void SendAll(String message);
   void CleanupClients();
 };
