@@ -16,7 +16,7 @@
     dialEndAngle: 45,
     value: 0,
     label: function (value) {
-      return Math.round(value) + ' °C';
+      return (Math.round(value *10)/10).toFixed(1) + ' °C';
     },
 /*     color: function (value) {
       if (value < 24) {

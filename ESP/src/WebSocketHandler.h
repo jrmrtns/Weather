@@ -6,7 +6,7 @@
 #include "SPIFFS.h"
 #include "ArduinoJson.h"
 
-extern String lastdatas;
+extern String lastdata;
 
 class WebSocketHandler
 {
