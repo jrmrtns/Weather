@@ -2,10 +2,10 @@
   import { onMount } from "svelte";
   import SvgGauge from "svg-gauge";
   import debounce from 'lodash/debounce'
-  
+
   let temperatureGauge;
   let gateway = `ws://${window.location.hostname}/ws`;
-  //let gateway = `ws://10.10.0.66/ws`;
+  //let gateway = `ws://10.10.0.9/ws`;
   let websocket: WebSocket;
   let targetTemperature = 28;
 
@@ -39,9 +39,12 @@
   });
 
   const targetChange = debounce(e => {
-    websocket.send("JSON.stringify(e.target.value)");
-  }, 500) 
-  
+    let data = {
+      target: e.target.value
+    }
+    websocket.send(JSON.stringify(data));
+  }, 500)
+
   const initWebSocket = () => {
     console.log("Trying to open a WebSocket connection...");
     websocket = new WebSocket(gateway);

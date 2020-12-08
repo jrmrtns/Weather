@@ -20,7 +20,9 @@ private:
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
     {
       data[len] = 0;
-      lastdata.target = (double)(28);
+      DynamicJsonDocument doc(JSON_OBJECT_SIZE(3));
+      deserializeJson(doc,  (char *)data);
+      lastdata.target = doc["target"];
     }
   }
 
@@ -38,6 +40,7 @@ private:
       break;
     case WS_EVT_DATA:
       handleWebSocketMessage(arg, data, len);
+      server->textAll(Sensor::ConvertToJson(lastdata));
       break;
     case WS_EVT_PONG:
     case WS_EVT_ERROR:
