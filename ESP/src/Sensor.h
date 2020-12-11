@@ -9,6 +9,7 @@ typedef struct sensorData
 } sensor_data;
 
 extern sensorData lastdata;
+extern double output;
 
 class Sensor
 {
