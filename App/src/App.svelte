@@ -74,6 +74,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    text-align: center;
     padding: 1em;
     margin: 0 auto;
     background-color: #1e2933;
@@ -108,6 +109,7 @@
 
   .gauge-container {
     justify-content: center;
+    max-width: 90vw;
 
     width: 450px;
     height: 450px;

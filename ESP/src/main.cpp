@@ -9,12 +9,12 @@ const char *hostname = "weather";
 const char *otapw = "weather";
 const char *ssid = "";
 const char *password = "";
+sensorData lastdata;
 
 Sensor sensor;
 WebServerHandler server;
 OTAHandler ota;
 WiFiHandler wifi;
-sensorData lastdata;
 double output;
 PID pid(&lastdata.temperature, &output, &lastdata.target, 2, 5, 1, DIRECT);
 const byte heating_gpio = 32; // the PWM pin the heating is attached to
