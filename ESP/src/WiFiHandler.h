@@ -16,7 +16,7 @@ public:
 
     while (WiFi.status() != WL_CONNECTED)
     {
-      delay(1000);
+      delay(200);
       Serial.println("Connecting to WiFi..");
     }
 

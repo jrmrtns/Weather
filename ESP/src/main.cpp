@@ -16,8 +16,9 @@ WebServerHandler server;
 OTAHandler ota;
 WiFiHandler wifi;
 double output;
-PID pid(&lastdata.temperature, &output, &lastdata.target, 20, 5, 20, DIRECT);
+PID pid(&lastdata.temperature, &output, &lastdata.target, 100, 0.1, 0, DIRECT);
 const byte heating_gpio = 32; // the PWM pin the heating is attached to
+uint counter = 0;
 
 void setup()
 {
@@ -42,19 +43,23 @@ void setup()
 
 void loop()
 {
+  counter ++;
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    wifi.Initialize();
+  }
+
   ota.Handle();
 
-  server.GetWebSocketHandler()->CleanupClients();
-
-  lastdata = sensor.Messure();
-  server.GetWebSocketHandler()->SendAll(Sensor::ConvertToJson(lastdata));
+  if (counter % 50 == 0)
+  {
+    server.GetWebSocketHandler()->CleanupClients();
+    lastdata = sensor.Messure();
+    server.GetWebSocketHandler()->SendAll(Sensor::ConvertToJson(lastdata));
+  }
 
   pid.Compute();
   ledcWrite(0, output);
 
-  Serial.printf("Input: %f ", lastdata.temperature);
-  Serial.printf("Target: %f ", lastdata.target);
-  Serial.printf("Output: %f\r\n", output);
-
-  delay(5000);
+  delay(100);
 }
